@@ -1,0 +1,17 @@
+[0m2021.10.11 10:15:18 INFO  Started: Metals version 0.10.7 in workspace 'C:\Users\18322\revature\projects\project0' for client Visual Studio Code 1.61.0.[0m
+[0m2021.10.11 10:15:19 INFO  time: initialize in 1s[0m
+[0m2021.10.11 10:15:20 WARN  Build server is not auto-connectable.[0m
+[0m2021.10.11 10:15:23 INFO  running 'C:\Users\18322\Downloads\null\Coursier\cache\jvm\adopt@1.8.0-292\bin\java -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\18322\AppData\Local\Temp\metals6641817893492511081\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall'[0m
+[0m2021.10.11 10:15:28 INFO  time: ran 'sbt bloopInstall' in 4.69s[0m
+[0m2021.10.11 10:15:28 ERROR sbt command failed: C:\Users\18322\Downloads\null\Coursier\cache\jvm\adopt@1.8.0-292\bin\java -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\18322\AppData\Local\Temp\metals6641817893492511081\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall[0m
+[0m2021.10.11 10:17:55 WARN  no build target for: C:\Users\18322\revature\projects\project0\src\main\scala\login\login.scala[0m
+[0m2021.10.11 10:18:04 INFO  no build target: using presentation compiler with only scala-library: 2.12.15[0m
+[0m2021.10.11 10:18:07 INFO  time: code lens generation in 11s[0m
+[0m2021.10.11 10:18:07 INFO  time: code lens generation in 11s[0m
+Oct 11, 2021 10:18:07 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 5
+Oct 11, 2021 10:18:07 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6
+Oct 11, 2021 10:18:08 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 11
+[0m2021.10.11 10:18:08 WARN  no build target for: C:\Users\18322\revature\projects\project0\src\main\scala\login\login.scala[0m

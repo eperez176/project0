@@ -1,4 +1,4 @@
-package p0;
+package p0.login;
 
 // Imports
 import scala.io.Source;
