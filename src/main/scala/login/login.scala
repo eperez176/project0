@@ -6,15 +6,15 @@ import java.io.File;
 import java.io._;
 import scala.io.StdIn.readLine;
 
-object ReadF {
-    def main(args: Array[String]) {
+case object ReadF {
+    /* def main(args: Array[String]) {
         login();
         //readFile();
         //writeFile();
-    }
+    } */
 
     def writeFile(): Unit = {
-        val filename = new File("Line.txt");
+        val filename = new File("misc/users.txt");
         val fsource = new FileWriter(filename, true);
         fsource.append("\nHOWDY");
         fsource.close();
@@ -23,7 +23,7 @@ object ReadF {
     def readFile(): Unit = {
         println("Howdy!");
         // Creating the file
-        val filename = new File("test.txt");
+        val filename = new File("misc/users.txt");
         val fsource = Source.fromFile(filename);
         for(line <- fsource.getLines()){
             println(line);
@@ -71,13 +71,11 @@ object ReadF {
             println("Verifying...");
             // Check every line for the combination
             for(line <- user_source.getLines()) {
-                println(line);
                 val lineSplit = line.split(",");
-                if(lineSplit(0) == username) // Validates
+                if(lineSplit(0) == username) // Verifies each line of the file
                     if(lineSplit(1) == password)
                         inServer = true;
             }
-            println("Ended this section")
         }
         else if(loginOption == 2) {
             println("Signing up")
@@ -85,9 +83,7 @@ object ReadF {
             username = scala.io.StdIn.readLine();
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            println(s"$username, $password");
-            var out = s"$username,$password\n";
-            user_writer.write(out);
+            user_writer.write(s"$username,$password\n");
             println("User successfully added")
         }
 
