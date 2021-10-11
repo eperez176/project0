@@ -10,7 +10,7 @@ case object Login {
     /* def main(args: Array[String]) {
         login();
     } */
-    def login(): Unit = {
+    def login(): Boolean = {
 
         var login_flag = true;
         var loginOption = 0;
@@ -48,19 +48,32 @@ case object Login {
             username = scala.io.StdIn.readLine();
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            println("Verifying...");
+            println("Verifying...\n");
             // Check every line for the combination
             for(line <- user_source.getLines()) {
                 val lineSplit = line.split(",");
-                if(lineSplit(0) == username) // Verifies each line of the file
-                    if(lineSplit(1) == password)
+                if(lineSplit(0) == username) // Checks if the username is in file
+                    if(lineSplit(1) == password) // Check if the password is a match
                         inServer = true;
             }
         }
-        else if(loginOption == 2) {
-            println("Signing up")
-            println("Enter username: ");
-            username = scala.io.StdIn.readLine();
+        else if(loginOption == 2) { // This can be done in a different function for length
+            var isUsernameInvalid = false;
+            println("Signing up...")
+            do { // BUG: Allows after one iteration!
+                isUsernameInvalid = false;
+                println("Enter username: ");
+                username = scala.io.StdIn.readLine(); // another aspect to be added is no certains chars allowed
+                for(line <- user_source.getLines()) {
+                    val lineSplit = line.split(",");
+                    if(lineSplit(0) == username) { // Checks if the username is in file
+                         isUsernameInvalid = true;
+                         println(s"\nSorry, username '$username' has already been taken.")
+                         println("Try again.\n")
+                    }
+                }
+            }  while (isUsernameInvalid);
+
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
             user_writer.write(s"$username,$password\n");
@@ -70,14 +83,18 @@ case object Login {
         // Simple message declaring successful login or not
         if(inServer) {
             println(s"Hello $username");
-            println("Loading user's information...");
+            println("Loading user's information...\n");
+            return true;
         }
         else {
-            println("Wrong username and password!")
+            println("Username and password combination not found")
+            println("Please try again")
+            return false;
         }
 
         user_source.close();
         user_writer.close();
+        return false;
 
     }
 }
