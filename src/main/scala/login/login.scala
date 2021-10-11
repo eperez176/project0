@@ -45,13 +45,14 @@ object ReadF {
         }
 
         // Opening the username, pass file
-        val user_file = new File("users.txt");
-        val user_source = Source.fromFile(user_file);
+        val user_file = new File("misc/users.txt");
+        val user_source = scala.io.Source.fromFile(user_file);
         val user_writer = new PrintWriter(user_file);
         var username = "";
         var password = "";
         var user_tmp = "";
         var pass_tmp = "";
+        var info: Array[String] = Array("", "");
 
 
         if(loginOption == 1) {
@@ -59,11 +60,12 @@ object ReadF {
             username = scala.io.StdIn.readLine();
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            println(s"$username, $password");
+            println(s"Hi $username!");
             // Check every line for the combination
-            for(line <- user_source.getLine()){
-                val lineSplit = line.split(",");
-                println("")
+            for(line <- user_source.getLines()){
+                println(line);
+                info = line.split(",");
+                println(info(1));
             }
         }
         else if(loginOption == 2) {
