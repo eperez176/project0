@@ -1,15 +1,23 @@
-package p0.login;
+package login;
 
 // Imports
 import scala.io.Source;
 import java.io.File;
-import java.io.PrintWriter;
-import scala.io.StdIn.readLine
+import java.io._;
+import scala.io.StdIn.readLine;
 
 object ReadF {
     def main(args: Array[String]) {
         login();
         //readFile();
+        //writeFile();
+    }
+
+    def writeFile(): Unit = {
+        val filename = new File("Line.txt");
+        val fsource = new FileWriter(filename, true);
+        fsource.append("\nHOWDY");
+        fsource.close();
     }
 
     def readFile(): Unit = {
@@ -46,13 +54,12 @@ object ReadF {
 
         // Opening the username, pass file
         val user_file = new File("misc/users.txt");
-        val user_source = scala.io.Source.fromFile(user_file);
-        val user_writer = new PrintWriter(user_file);
+        val user_source = Source.fromFile(user_file);
+        val user_writer = new FileWriter(user_file, true);
         var username = "";
         var password = "";
         var user_tmp = "";
         var pass_tmp = "";
-        var info: Array[String] = Array("", "");
 
 
         if(loginOption == 1) {
@@ -60,13 +67,14 @@ object ReadF {
             username = scala.io.StdIn.readLine();
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            println(s"Hi $username!");
+            println(s"$username, $password");
             // Check every line for the combination
-            for(line <- user_source.getLines()){
+            for(line <- user_source.getLines()) {
                 println(line);
-                info = line.split(",");
-                println(info(1));
+                val lineSplit = line.split(",");
+                println(lineSplit);
             }
+            println("Ended this section")
         }
         else if(loginOption == 2) {
             println("Signing up")
@@ -75,7 +83,8 @@ object ReadF {
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
             println(s"$username, $password");
-            user_writer.write(s"$username,$password");
+            var out = s"$username,$password";
+            user_writer.write(out);
             println("User successfully added")
         }
 
