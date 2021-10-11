@@ -1,9 +1,7 @@
 import example.prints;
-import login.ReadF;
+import login.Login;
 
 object main extends App {
-    prints.howdy;
-    ReadF.readFile();
-    println("This is the main object!");
-
+    println("Welcome to EC!")
+    Login.login();
 }
