@@ -60,6 +60,7 @@ object ReadF {
         var password = "";
         var user_tmp = "";
         var pass_tmp = "";
+        var inServer = false; // Assumes the user is not in the database
 
 
         if(loginOption == 1) {
@@ -67,12 +68,14 @@ object ReadF {
             username = scala.io.StdIn.readLine();
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            println(s"$username, $password");
+            println("Verifying...");
             // Check every line for the combination
             for(line <- user_source.getLines()) {
                 println(line);
                 val lineSplit = line.split(",");
-                println(lineSplit);
+                if(lineSplit(0) == username) // Validates
+                    if(lineSplit(1) == password)
+                        inServer = true;
             }
             println("Ended this section")
         }
@@ -83,11 +86,16 @@ object ReadF {
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
             println(s"$username, $password");
-            var out = s"$username,$password";
+            var out = s"$username,$password\n";
             user_writer.write(out);
             println("User successfully added")
         }
 
+        if(inServer)
+            println(s"Hello $username");
+        else
+            println("Wrong username and password!")
+        println()
         user_source.close();
         user_writer.close();
 
