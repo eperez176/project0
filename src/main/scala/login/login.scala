@@ -68,11 +68,14 @@ case object Login {
         } // To be added, no repeat username
 
         // Simple message declaring successful login or not
-        if(inServer)
+        if(inServer) {
             println(s"Hello $username");
-        else
+            println("Loading user's information...");
+        }
+        else {
             println("Wrong username and password!")
-            
+        }
+
         user_source.close();
         user_writer.close();
 

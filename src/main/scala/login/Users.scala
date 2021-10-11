@@ -5,4 +5,5 @@ abstract class Users {
     var username:String;
     var name:String;
     var money:Double;
+    var items:String;
 }
