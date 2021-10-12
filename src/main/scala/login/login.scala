@@ -60,11 +60,14 @@ case object Login {
         else if(loginOption == 2) { // This can be done in a different function for length
             var isUsernameInvalid = false;
             println("Signing up...")
-            do { // BUG: Allows after one iteration!
+
+            // The current method is time wasting, but saves more memory
+            do { // More effecient is stacking all the usernames into a container (capacity can be prob)
+                val user_s = Source.fromFile(user_file); // Keep closing and opening files to check again
                 isUsernameInvalid = false;
                 println("Enter username: ");
                 username = scala.io.StdIn.readLine(); // another aspect to be added is no certains chars allowed
-                for(line <- user_source.getLines()) {
+                for(line <- user_s.getLines()) {
                     val lineSplit = line.split(",");
                     if(lineSplit(0) == username) { // Checks if the username is in file
                          isUsernameInvalid = true;
@@ -72,6 +75,7 @@ case object Login {
                          println("Try again.\n")
                     }
                 }
+                user_s.close(); 
             }  while (isUsernameInvalid);
 
             println("Enter password: ");
