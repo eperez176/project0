@@ -1,1 +1,2 @@
-anon,pass
+tony,tiger
+root,pass

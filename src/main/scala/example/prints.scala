@@ -12,5 +12,6 @@ object prints extends App {
 
     val filename = new File("Check.txt"); // This allows the creation of the file.
     val user_writer = new FileWriter(filename, true); 
+    user_writer.write("I eat burgers.")
     user_writer.close();
 }

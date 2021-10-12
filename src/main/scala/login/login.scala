@@ -76,7 +76,9 @@ case object Login {
 
             println("Enter password: ");
             password = scala.io.StdIn.readLine();
-            user_writer.write(s"$username,$password\n");
+            val out = s"$username,$password\n";
+            println(out);
+            user_writer.write(out);
             println("User successfully added")
         } // To be added, no repeat username
 
@@ -84,16 +86,19 @@ case object Login {
         if(inServer) {
             println(s"Hello $username");
             println("Loading user's information...\n");
+            user_source.close();
+            user_writer.close();
             return true;
         }
         else {
             println("Username and password combination not found")
             println("Please try again")
+            user_source.close();
+            user_writer.close();
             return false;
         }
 
-        user_source.close();
-        user_writer.close();
+
         return false;
 
     }
