@@ -6,7 +6,7 @@ case object Game { // Object having the game engines
         var board = Array.ofDim[Char](3,3); // Creates the the simple board
         for(i <- 0 to 2){
             for(j <- 0 to 2)
-                board(i)(j) = 'X';
+                board(i)(j) = 'O';
         }
         printBoard(board);
 
@@ -14,28 +14,27 @@ case object Game { // Object having the game engines
     def black_jack(){
         println("Starting the black jack game...")
     }
-    def memory_game(){
-        println("Starting the memory game...")
-    }
 
+    // Prints the board for the game tic tac toe, to reduce lines at each stage
     def printBoard(b: Array[Array[Char]]): Unit = {
-        print(b(0)(0));
-        print('|');
+        println("");
+        print(" " + b(0)(0));
+        print(" | ");
         print(b(0)(1));
-        print('|');
+        print(" | ");
         println(b(0)(2));
-        println("-----")
-        print(b(1)(0));
-        print('|');
+        println("-----------")
+        print(" " + b(1)(0));
+        print(" | ");
         print(b(1)(1));
-        print('|');
+        print(" | ");
         println(b(1)(2));
-        println("-----")
-        print(b(2)(0));
-        print('|');
+        println("-----------")
+        print(" " + b(2)(0));
+        print(" | ");
         print(b(2)(1));
-        print('|');
+        print(" | ");
         println(b(2)(2));
-
+        println();
     }
 }
