@@ -74,6 +74,9 @@ case object Login {
                          println(s"\nSorry, username '$username' has already been taken.")
                          println("Try again.\n")
                     }
+                    else
+                        inServer = true; // Since the username is in the database
+                        // Might need another flag to state a new player/user
                 }
                 user_s.close(); 
             }  while (isUsernameInvalid);
