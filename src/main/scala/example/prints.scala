@@ -5,7 +5,7 @@ import scala.io.Source;
 import java.io.File;
 import java.io._;
 import scala.io.StdIn.readLine;
-
+// Tests certain functions seperately 
 object prints extends App {
     def howdy: Unit = println("Howdy Yall");
     def no_howdy: Unit = println("No");
