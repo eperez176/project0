@@ -22,10 +22,16 @@ case object Game { // Object having the game engines
                 println("Bot Chose")
                 botPosition = botPick(board); // Valid position function for bot
                 board(botPosition) = 'O';
-                printBoard(board); // Print the end board of the turn
+                gameOver = gameFinish(board);
             }
         } while(!(gameOver._1));
         
+        if(gameOver._2 == 1)
+            println("YOU WIN!")
+        else if(gameOver._2 == 2)
+            println("YOU LOST!")
+        else
+            println("DRAW!")
 
     }
     def black_jack(){
@@ -79,14 +85,81 @@ case object Game { // Object having the game engines
     // Function to decide if the game is over
     def gameFinish(b: Array[Char]): (Boolean, Int) = {
         var fullBoard = 0;
+        var temp = 0;
+        var win = -1;
+        printBoard(b);
         for(i <- 0 to 8) {
             if(b(i) == 'X' || b(i) == 'O')
                 fullBoard = fullBoard + 1;
         }
 
-        if(fullBoard == 9)
-            return (true, 0);
+        win = gameWon('X', b);
+        if(win != 1)
+            win = gameWon('O', b);
+
+
+        if(fullBoard == 9 && win == 0)
+            return (true, 0); // Draw
+        else if(win == 1)
+            return (true, 1)
+        else if(win == 2)
+            return (true, 2)
         else
-            return (false, -1);
+            return (false, -1); // Has not ended
+    }
+
+    def gameWon(c: Char, b: Array[Char]): Int = {
+        var win = 0;
+
+        // All the cases of a possible win (each row and diag)
+        if(b(0) == c) {
+            if(b(1) == c) {
+                if(b(2) == c)
+                    win = 1;
+            }
+            else if(b(4) == c){
+                if(b(8) == c)
+                    win = 1;
+            }
+            else if(b(3) == c) {
+                if(b(6) == c)
+                    win = 1;
+            }
+        }
+        else if(b(1) == c) {
+            if(b(4) == c) {
+                if(b(7) == c)
+                    win = 1;
+            }
+        }
+        else if(b(2) == c) {
+            if(b(5) == c) {
+                if(b(8) == c)
+                    win = 1;
+            }
+            else if(b(4) == c){
+                if(b(6) == c)
+                    win = 1;
+            }
+        }
+        else if(b(5) == c) {
+            if(b(4) == c) {
+                if(b(3) == c)
+                    win = 1;
+            }
+        }
+        else if(b(8) == c) {
+            if(b(7) == c) {
+                if(b(6) == c)
+                    win = 1;
+            }
+        }
+
+        if(c == 'X' && win == 1)
+            return 1;
+        else if(c == 'O' && win == 1)
+            return 2;
+        else
+            return 0;
     }
 }
