@@ -93,7 +93,7 @@ case object Game { // Object having the game engines
                 fullBoard = fullBoard + 1;
         }
 
-        win = gameWon('X', b);
+        win = gameWon('X', b); // Maybe origins here when 8 spaces are taken up
         if(win != 1)
             win = gameWon('O', b);
 
@@ -117,38 +117,38 @@ case object Game { // Object having the game engines
                 if(b(2) == c)
                     win = 1;
             }
-            else if(b(4) == c){
+            if(b(4) == c) { // Bug on not resulting as should
                 if(b(8) == c)
                     win = 1;
             }
-            else if(b(3) == c) {
+            if(b(3) == c) {
                 if(b(6) == c)
                     win = 1;
             }
         }
-        else if(b(1) == c) {
+        if (b(1) == c) {
             if(b(4) == c) {
                 if(b(7) == c)
                     win = 1;
             }
         }
-        else if(b(2) == c) {
+        if(b(2) == c) {
             if(b(5) == c) {
                 if(b(8) == c)
                     win = 1;
             }
-            else if(b(4) == c){
+            if(b(4) == c) {
                 if(b(6) == c)
                     win = 1;
             }
         }
-        else if(b(5) == c) {
+        if(b(5) == c) {
             if(b(4) == c) {
                 if(b(3) == c)
                     win = 1;
             }
         }
-        else if(b(8) == c) {
+        if(b(8) == c) {
             if(b(7) == c) {
                 if(b(6) == c)
                     win = 1;
