@@ -1,5 +1,5 @@
 package  game;
-
+// Invalid entries allowed, fix!
 import scala.io.StdIn.readLine;
 
 case object Game { // Object having the game engines
