@@ -13,6 +13,8 @@ import helper.Helpers._;
 import java.io._;
 import scala.io.StdIn.readLine;
 
+import org.mongodb.scala.model.Sorts._
+
 object DB { // DB functions
     def createDB: Unit = {
         var count = 0;

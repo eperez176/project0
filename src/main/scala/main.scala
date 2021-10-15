@@ -16,6 +16,7 @@ object main extends App {
     isRealUser = NewLogin.login;
     if(isRealUser) {
         Menu.printLogo;
+        println("Search(1), game (2)");
         opt = Menu.initialOptions;
     }
 

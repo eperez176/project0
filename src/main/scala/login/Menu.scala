@@ -15,7 +15,6 @@ case object Menu {
 
         do { // Request for a valid option
             println("What would you like to do:");
-            println("Search(1), game (2)");
             out = scala.io.StdIn.readInt();
             if(out == 1 || out == 2)
                 validOpt = true;
@@ -36,18 +35,19 @@ case object Menu {
         // Get a Collection.
         val collection: MongoCollection[Document] = database.getCollection("UsedCars");
         var opt = 0;
-        println("Search options include: Find (1), average (2)");
+        println("\nSearch options include: Find (1), average (2)\n");
         opt = initialOptions; // Ask for a valid option
         
         // Search functions
         if(opt == 1) {
-            println("For unwanted options: Enter 'N/A' \n");
+            println("\nFor unwanted fields: Enter 'N/A' \n");
 
             println("Car Manufacturer");
             manuf_name = scala.io.StdIn.readLine();
             println("Car Model")
-            manuf_name = scala.io.StdIn.readLine();
+            model_name = scala.io.StdIn.readLine();
             val out = collection.find(equal("manufacturer_name", manuf_name)).results();
+            print(out);
         }
     }
 
@@ -56,7 +56,7 @@ case object Menu {
         println("              000        000      000");
         println("-           0000        0000       0000");
         println("----   00000000000000000000000000000000000000000")
-        println("----  0000000000 WELCOME  TO USED CARS! 000000000")
+        println("----  0000000000 WELCOME TO USED CARS! 0000000000")
         println("----    000000000000000000000000000000000000000");
         println("-         00000000                  00000000");
         println("            0000                      0000");
