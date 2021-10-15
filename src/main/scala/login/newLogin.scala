@@ -11,7 +11,7 @@ import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import org.mongodb.scala.bson;
 
-object newLogin extends App {
+object NewLogin {
         def login: Boolean = {
             // Starting the mongoclient
             val client: MongoClient = MongoClient();
@@ -25,18 +25,18 @@ object newLogin extends App {
 
             // Checks if the user is new or current user
             while(login_flag) {
-                println("\nType either 1 (sign in) or 2 (sign up): \n");
+                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account): \n");
                 loginOption = scala.io.StdIn.readInt();
-                if(loginOption == 1 || loginOption == 2) {
+                if(loginOption == 1 || loginOption == 2 || loginOption == 3) {
                     println(s"You picked: $loginOption");
                     login_flag = false;
                 }
-                else if(loginOption == 3){
+                else if(loginOption == 4){
                     println("Exiting...")
                     login_flag = false;
                 }
                 else
-                    println("You did not pick a valid option, to exit enter 3.")
+                    println("You did not pick a valid option, to exit enter 4.")
             }
 
             var username = "";
@@ -45,6 +45,7 @@ object newLogin extends App {
             var user_tmp = "";
             var pass_tmp = "";
             var inServer = false; // Assumes the user is not in the database
+            var deleteAccount = false;
 
             // Checks if the user is in the database
             do {
@@ -76,6 +77,8 @@ object newLogin extends App {
                         println("Enter email:")
                         new_email = scala.io.StdIn.readLine();
                         inServer = true;
+
+                        // New user will not be admin
                         val doc: Document = Document (
                             "_id" -> username,
                             "pass" -> password,
@@ -90,11 +93,43 @@ object newLogin extends App {
                     }
 
                 }
-            } while(!inServer);
-            println(s"\nHello $username!");
-            println("Loading user's information...\n");
-            if(inServer)
+                else if(loginOption == 3) {
+                    println("Enter username: ");
+                    username = scala.io.StdIn.readLine();
+                    println("Enter password: ");
+                    password = scala.io.StdIn.readLine();
+                    println("\nVerifying...\n");
+                    val out = collection.find(equal("_id", username)).results();
+                    if(!out.isEmpty) {
+                        val new_out = out(0).get("pass").get.asString().getValue();
+                        if(new_out == password) {
+                            println("\nAre you sure? Type: Yes (Y) or No (N)")
+                            val inpDel = scala.io.StdIn.readChar();
+                            if(inpDel == 'Y') {
+                                println("\nDeleting acount...");
+                                collection.deleteOne(equal("_id", username)).printResults();
+                                println("Account deleted!");
+                                deleteAccount = true;
+                            }
+                            else {
+                                println("\nUsername and password combination not found")
+                                println("Please try again\n")
+                            }
+                        }
+                    }
+                    else {
+                            println("\nUsername and password combination not found")
+                            println("Please try again\n")
+                        }
+
+                }
+            } while(!inServer && !deleteAccount);
+
+            if(inServer) {
+                println(s"\nHello $username!");
+                println("Loading user's information...\n");
                 return true;
+            }
             else
                 return false;
             //val out = collection.find(equal("_id", "anon")).results();

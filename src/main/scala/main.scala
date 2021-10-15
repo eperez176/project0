@@ -1,5 +1,5 @@
 import example.prints;
-import login.Login;
+import login.NewLogin;
 import login.Menu;
 
 // Admin user that has extra perks like looking at the current users, delete, insert etc.
@@ -12,7 +12,7 @@ object main extends App {
     println("Please login")
 
     // Sign in/ Sign up before continuing
-    isRealUser = Login.login();
+    isRealUser = NewLogin.login;
     if(isRealUser) {
         Menu.welcome;
         opt = Menu.options;
