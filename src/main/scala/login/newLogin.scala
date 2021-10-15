@@ -23,7 +23,7 @@ object NewLogin {
             var loginOption = 0;
             println("Starting up...");
 
-            // Checks if the user is new or current user
+            // Checks if the user is new or current user or deleting account
             while(login_flag) {
                 println("\nType either 1 (sign in), 2 (sign up), 3 (delete account): \n");
                 loginOption = scala.io.StdIn.readInt();
@@ -49,7 +49,7 @@ object NewLogin {
 
             // Checks if the user is in the database
             do {
-                if(loginOption == 1) {
+                if(loginOption == 1) { // Looks for user in the User Database
                     println("Enter username: ");
                     username = scala.io.StdIn.readLine();
                     println("Enter password: ");
@@ -61,19 +61,19 @@ object NewLogin {
                         val new_out = out(0).get("pass").get.asString().getValue();
                         if(new_out == password)
                             inServer = true;
-                        if(!inServer) {
-                            println("\nUsername and password combination not found")
-                            println("Please try again\n")
-                        }
+                    }
+                    if(!inServer) { // If the combination does not exist
+                        println("\nUsername and password combination not found")
+                        println("Please try again\n")
                     }
                 }
-                else if(loginOption == 2) {
+                else if(loginOption == 2) { // Enters the new user into the database
                     var isUsernameInvalid = false;
                     println("\nSigning up...")
                     println("Enter username: ");
                     username = scala.io.StdIn.readLine();
                     val out2 = collection.find(equal("_id", username)).results();
-                    if(out2.isEmpty) {
+                    if(out2.isEmpty) { // Only enter if its a unique username
                         println("Enter password: ");
                         password = scala.io.StdIn.readLine();
                         println("Enter email:")
@@ -95,14 +95,14 @@ object NewLogin {
                     }
 
                 }
-                else if(loginOption == 3) {
+                else if(loginOption == 3) { // Deletes the user from the database
                     println("Enter username: ");
                     username = scala.io.StdIn.readLine();
                     println("Enter password: ");
                     password = scala.io.StdIn.readLine();
                     println("\nVerifying...\n");
                     val out = collection.find(equal("_id", username)).results();
-                    if(!out.isEmpty) {
+                    if(!out.isEmpty) { // Only checks if the username exists in the database
                         val new_out = out(0).get("pass").get.asString().getValue();
                         if(new_out == password) {
                             println("\nAre you sure? Type: Yes (Y) or No (N)")
@@ -123,18 +123,15 @@ object NewLogin {
                             println("\nUsername and password combination not found")
                             println("Please try again\n")
                         }
-
                 }
-            } while(!inServer && !deleteAccount);
+            } while(!inServer && !deleteAccount); // Escape the loop if either login or delete accured
 
-            if(inServer) {
+            if(inServer) { // Return true if sign in or sign up was successful
                 println(s"\nHello $username!");
                 println("Loading user's information...\n");
                 return true;
             }
-            else
+            else // False in other cases like deleting account
                 return false;
-            //val out = collection.find(equal("_id", "anon")).results();
-            //val new_out = out(0).get("_id").get.asString().getValue; // This is how you get data from it
         }
     }
