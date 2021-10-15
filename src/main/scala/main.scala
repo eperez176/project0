@@ -1,6 +1,7 @@
 import example.prints;
 import login.NewLogin;
 import login.Menu;
+import game.Game;
 
 // Admin user that has extra perks like looking at the current users, delete, insert etc.
 // While having users only be able to use
@@ -14,7 +15,14 @@ object main extends App {
     // Sign in/ Sign up before continuing
     isRealUser = NewLogin.login;
     if(isRealUser) {
-        Menu.welcome;
-        opt = Menu.options;
+        Menu.printLogo;
+        opt = Menu.initialOptions;
+    }
+
+    if(opt == 1) {
+        Menu.searchOptions;
+    }
+    else if(opt == 2) {
+        Game.tic_tac_toe();
     }
 }
