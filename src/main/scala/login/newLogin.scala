@@ -57,12 +57,14 @@ object NewLogin {
                     println("\nVerifying...\n");
                     // Check every line for the combination
                     val out = collection.find(equal("_id", username)).results();
-                    val new_out = out(0).get("pass").get.asString().getValue();
-                    if(new_out == password)
-                        inServer = true;
-                    if(!inServer) {
-                        println("\nUsername and password combination not found")
-                        println("Please try again\n")
+                    if(!out.isEmpty) { // Prevents error if the username does not exist
+                        val new_out = out(0).get("pass").get.asString().getValue();
+                        if(new_out == password)
+                            inServer = true;
+                        if(!inServer) {
+                            println("\nUsername and password combination not found")
+                            println("Please try again\n")
+                        }
                     }
                 }
                 else if(loginOption == 2) {
