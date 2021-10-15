@@ -6,6 +6,10 @@ import java.io.File;
 import java.io._;
 import scala.io.StdIn.readLine;
 
+import org.mongodb.scala._;
+import org.mongodb.scala.model.Filters._
+import helper.Helpers._;
+
 case object Login {
     /* def main(args: Array[String]) {
         login();

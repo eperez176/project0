@@ -117,7 +117,7 @@ case object Game { // Object having the game engines
                 if(b(2) == c)
                     win = 1;
             }
-            if(b(4) == c) { // Bug on not resulting as should
+            if(b(4) == c) {
                 if(b(8) == c)
                     win = 1;
             }
