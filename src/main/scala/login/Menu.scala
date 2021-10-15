@@ -51,15 +51,15 @@ case object Menu {
         }
     }
 
-    def printLogo: Unit = {
-        println("         000000000000000000000");
-        println("        000        000      000");
-        println("      0000        0000       0000");
-        println(" 00000000000000000000000000000000000000000")
-        println("0000000000 WELCOME  TO USED CARS! 000000000")
-        println("  000000000000000000000000000000000000000");
-        println("    00000000                  00000000");
-        println("      0000                      0000");
+    def printLogo: Unit = { // Prints a welcome message
+        println("               000000000000000000000");
+        println("              000        000      000");
+        println("-           0000        0000       0000");
+        println("----   00000000000000000000000000000000000000000")
+        println("----  0000000000 WELCOME  TO USED CARS! 000000000")
+        println("----    000000000000000000000000000000000000000");
+        println("-         00000000                  00000000");
+        println("            0000                      0000");
 
     }
   
