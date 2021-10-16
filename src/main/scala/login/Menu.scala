@@ -6,6 +6,10 @@ import org.mongodb.scala._;
 import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import org.mongodb.scala.bson;
+ import org.mongodb.scala.model.Aggregates._
+ import org.mongodb.scala.model.Accumulators._
+ import org.mongodb.scala.model.Filters._
+ import org.mongodb.scala.model.Projections._
 
 // Will create the menu and their functions
 case object Menu {
@@ -48,6 +52,13 @@ case object Menu {
             model_name = scala.io.StdIn.readLine();
             val out = collection.find(equal("manufacturer_name", manuf_name)).results();
             print(out);
+        }
+        else if(opt == 2) {
+            println("What would you like to find average of:")
+            println("Model:");
+            manuf_name = scala.io.StdIn.readLine();
+            val out = collection.aggregate( Seq(group("$model_name", avg("price_usd", 1)))).printResults();
+            println(out);
         }
     }
 

@@ -37,7 +37,8 @@ object Hello extends App {
               var mn = single_doc.get("manufacturer_name").get.asString().getValue();
               var price = single_doc.get("price_usd").get.asDouble().getValue();
               var od_val = single_doc.get("odometer_value").get.asInt32().getValue();
-              println(s"$mnn, $mn: Price: $price with odometer value: $od_val");
+              var year = single_doc.get("year_produced").get.asInt32().getValue();
+              println(s"$mnn, $mn: Price: $price with odometer value: $od_val and year produce: $year");
             }
 
         }
