@@ -5,6 +5,9 @@ import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import java.io._;
 import scala.io.StdIn.readLine;
+import org.mongodb.scala.model.Sorts._;
+import org.mongodb.scala.model.Aggregates._
+import org.mongodb.scala.model.Accumulators._
 
 object Hello extends App {
         var manuf_name = "";
@@ -23,9 +26,9 @@ object Hello extends App {
         opt = scala.io.StdIn.readInt();
         var out = collection.find().results; // Pre-load to have variable set
         // Search functions
-        if(opt == 1) {
+        if(opt == 2) {
             println("For unwanted options: Enter '0' \n");
-
+            println("What average?")
             println("Car Manufacturer");
             manuf_name = scala.io.StdIn.readLine();
             println("Car Model")
@@ -33,61 +36,15 @@ object Hello extends App {
             println("Max Price")
             m_price = scala.io.StdIn.readDouble();
 
-            /*val out = collection.find(and(equal("manufacturer_name", manuf_name), equal("model_name", model_name), lt("price_usd", m_price))).results;
+            out = collection.aggregate( Seq(group("$model_name",avg("avg_p", "$price_usd")))).results;
+            
             for(single_doc <- out) {
-              var manuf_n = single_doc.get("manufacturer_name").get.asString().getValue();
-              var model_n = single_doc.get("model_name").get.asString().getValue();
-              var price = single_doc.get("price_usd").get.asDouble().getValue();
-              var year = single_doc.get("year_produced").get.asInt32().getValue();
-            }
-            */
+              var id = single_doc.get("_id").get.asString().getValue();
+              var avg_p = single_doc.get("avg_p").get.asDouble().getValue();
+              println(s"Model: $id, Avg Price:" +" $" +s"$avg_p ");
+            } 
 
-              if(manuf_name != "0") {
-                if (model_name != "0") {
-                  if(m_price != 0) {
-                    out = collection.find(and(equal("manufacturer_name", manuf_name), equal("model_name", model_name), lte("price_usd",m_price))).results;
-                  }
-                  else {
-                    out = collection.find(and(equal("manufacturer_name", manuf_name), equal("model_name", model_name))).results;
-                  }
-                }
-                else {
-                  if(m_price != 0) {
-                    out = collection.find(and(equal("manufacturer_name", manuf_name), lte("price_usd",m_price))).results;
-                  }
-                  else {
-                    out = collection.find(equal("manufacturer_name", manuf_name)).results;
-                  }
-                }
-              }
-              else {
-                if(model_name != "0") {
-                  if(m_price != 0) {
-                    out = collection.find(and(equal("model_name", model_name), lte("price_usd",m_price))).results;
-                  }
-                  else {
-                    out = collection.find(equal("model_name", model_name)).results;
-                  }
-
-                }
-                else {
-                  if(m_price != 0) {
-                    out = collection.find(equal("price_usd", m_price)).results;
-                  }
-                  else { // All resuts
-                    out = collection.find().results;
-                  }
-                }
-              }
-
-            // Prints the outcome of the search query  
-            for(single_doc <- out) {
-              var manuf_n = single_doc.get("manufacturer_name").get.asString().getValue();
-              var model_n = single_doc.get("model_name").get.asString().getValue();
-              var price = single_doc.get("price_usd").get.asDouble().getValue();
-              var year = single_doc.get("year_produced").get.asInt32().getValue();
-              println(s"$model_n, $manuf_n, $price, $year");
-            }
+            //println(out);
         }
         client.close();
 }

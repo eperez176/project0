@@ -104,18 +104,14 @@ object NewLogin {
                     val out = collection.find(equal("_id", username)).results();
                     if(!out.isEmpty) { // Only checks if the username exists in the database
                         val new_out = out(0).get("pass").get.asString().getValue();
-                        if(new_out == password) {
+                        if(new_out == password) { // Make sure if it's desired
                             println("\nAre you sure? Type: Yes (Y) or No (N)")
                             val inpDel = scala.io.StdIn.readChar();
-                            if(inpDel == 'Y') {
+                            if(inpDel == 'Y') { // Delete account
                                 println("\nDeleting acount...");
                                 collection.deleteOne(equal("_id", username)).printResults();
                                 println("Account deleted!");
                                 deleteAccount = true;
-                            }
-                            else {
-                                println("\nUsername and password combination not found")
-                                println("Please try again\n")
                             }
                         }
                     }
