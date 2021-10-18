@@ -35,13 +35,14 @@ case object Menu {
         var color = "";
         var m_price = 0.0;
         var year_p = 0;
+        var option_2 = 0;
 
         println("Loading the search queue...");
         
         val client: MongoClient = MongoClient();
         val database: MongoDatabase = client.getDatabase("Ecommerce");
         // Get a Collection.
-        val collection: MongoCollection[Document] = database.getCollection("UsedCars");
+        val collection: MongoCollection[Document] = database.getCollection("smallCars");
         var out = collection.find().results; // Pre-load to have variable set
         var opt = 0;
         println("\nSearch options include: Find (1), average (2)\n");
@@ -98,21 +99,49 @@ case object Menu {
               }
         }
         else if(opt == 2) {
-            println("What would you like to find average of:")
-            println("Model:");
-            manuf_name = scala.io.StdIn.readLine();
-            val out = collection.aggregate( Seq(group("$model_name", avg("price_usd", 1)))).printResults();
-            println(out);
+            println("For unwanted options: Enter '0' \n");
+            println("Average Price of Car Manufacturer (1) or Car Model (2)");
+            option_2 = scala.io.StdIn.readInt();// Reads the option, limits the possibilities
+
+            if(option_2 == 1)
+                out = collection.aggregate((Seq(group("$manufacturer_name", sum("num",1),avg("avg_p", "$price_usd")), sort(ascending("avg_p"))))).results;
+            else if(option_2 == 2) 
+                out = collection.aggregate( Seq(group("$model_name",push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;
+            
         }
 
-        for(single_doc <- out) {
-            var id = single_doc.get("_id").get.asInt32().getValue();
-            var manuf_n = single_doc.get("manufacturer_name").get.asString().getValue();
-            var model_n = single_doc.get("model_name").get.asString().getValue();
-            var price = single_doc.get("price_usd").get.asDouble().getValue();
-            var year = single_doc.get("year_produced").get.asInt32().getValue();
-            var od_value = single_doc.get("odometer_value").get.asInt32().getValue();
-            println(s"$id, Model: $model_n, Manufacturer: $manuf_n, Price:" +"$" +s"$price, Year: $year, Odometer: $od_value");
+        if(opt == 1) {
+            println("The number of results: " + out.length);
+            for(single_doc <- out) {
+                var id = single_doc.get("_id").get.asInt32().getValue();
+                var manuf_n = single_doc.get("manufacturer_name").get.asString().getValue();
+                var model_n = single_doc.get("model_name").get.asString().getValue();
+                var price = single_doc.get("price_usd").get.asDouble().getValue();
+                var year = single_doc.get("year_produced").get.asInt32().getValue();
+                var od_value = single_doc.get("odometer_value").get.asInt32().getValue();
+                println(s"$id, $manuf_n $model_n: Price:" +"$" +s"$price, Year: $year, Odometer: $od_value");
+            }
+        }
+        else if(opt == 2) {
+            println("The number of results: " + out.length);
+            if(option_2 == 2) {
+                for(single_doc <- out) {
+                var id = single_doc.get("_id").get.asString().getValue();
+                var count = single_doc.get("num").get.asInt32().getValue();
+                var manu = single_doc.get("manu_n").get.asArray.get(0).asString().getValue();
+                var avg_p = single_doc.get("avg_p").get.asDouble().getValue();
+                println(s"$manu, Model: $id, Avg Price:" +" $" + f"$avg_p%.2f ($count)");
+                //println(manu);
+                }
+            }
+            else if(option_2 == 1) {
+                for(single_doc <- out) {
+                    var id = single_doc.get("_id").get.asString().getValue();
+                    var count = single_doc.get("num").get.asInt32().getValue();
+                    var avg_p = single_doc.get("avg_p").get.asDouble().getValue();
+                    println(s"$id, Avg Price:" +" $" + f"$avg_p%.2f ($count)");
+                }
+            }
         }
     }
 
