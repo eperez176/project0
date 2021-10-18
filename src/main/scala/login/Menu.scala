@@ -43,7 +43,7 @@ case object Menu {
         val database: MongoDatabase = client.getDatabase("Ecommerce");
         // Get a Collection.
         val collection: MongoCollection[Document] = database.getCollection("smallCars");
-        var out = collection.find().results; // Pre-load to have variable set
+        var out = collection.find(and(equal("manufacturer_name", "Subaru"), equal("price_usd", 2000))).results; // Pre-load to have variable set, small set
         var opt = 0;
         println("\nSearch options include: Find (1), average (2)\n");
         opt = initialOptions; // Ask for a valid option
@@ -90,7 +90,7 @@ case object Menu {
                 }
                 else {
                   if(m_price != 0) {
-                    out = collection.find(equal("price_usd", m_price)).sort(ascending("price_usd")).results;
+                    out = collection.find(lte("price_usd", m_price)).sort(ascending("price_usd")).results;
                   }
                   else { // All resuts
                     out = collection.find().sort(ascending("price_usd")).results;
@@ -102,16 +102,24 @@ case object Menu {
             println("For unwanted options: Enter '0' \n");
             println("Average Price of Car Manufacturer (1) or Car Model (2)");
             option_2 = scala.io.StdIn.readInt();// Reads the option, limits the possibilities
+            println("Any specific brand? ('0' for none)")
+            var opt_3 = scala.io.StdIn.readLine();
 
-            if(option_2 == 1)
+
+            if(option_2 == 1 && opt_3 == "0")
                 out = collection.aggregate((Seq(group("$manufacturer_name", sum("num",1),avg("avg_p", "$price_usd")), sort(ascending("avg_p"))))).results;
-            else if(option_2 == 2) 
-                out = collection.aggregate( Seq(group("$model_name",push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;
+            else if(option_2 == 2 && opt_3 == "0") 
+                out = collection.aggregate( Seq(group("$model_name", push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;
+            else if(option_2 == 1)
+                out = collection.aggregate((Seq(filter(equal("manufacturer_name",opt_3)),group("$manufacturer_name", sum("num",1),avg("avg_p", "$price_usd")), sort(ascending("avg_p"))))).results;
+            else if(option_2 == 2)
+                out = collection.aggregate( Seq(filter(equal("model_name", opt_3)),group("$model_name", push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;
             
         }
 
+        // Printing the results to the command prompt
         if(opt == 1) {
-            println("The number of results: " + out.length);
+            
             for(single_doc <- out) {
                 var id = single_doc.get("_id").get.asInt32().getValue();
                 var manuf_n = single_doc.get("manufacturer_name").get.asString().getValue();
@@ -119,7 +127,7 @@ case object Menu {
                 var price = single_doc.get("price_usd").get.asDouble().getValue();
                 var year = single_doc.get("year_produced").get.asInt32().getValue();
                 var od_value = single_doc.get("odometer_value").get.asInt32().getValue();
-                println(s"$id, $manuf_n $model_n: Price:" +"$" +s"$price, Year: $year, Odometer: $od_value");
+                println(s"ID: $id, $manuf_n $model_n: Price:" +"$" +f"$price%.2f, Year: $year, Odometer: $od_value");
             }
         }
         else if(opt == 2) {
@@ -130,7 +138,7 @@ case object Menu {
                 var count = single_doc.get("num").get.asInt32().getValue();
                 var manu = single_doc.get("manu_n").get.asArray.get(0).asString().getValue();
                 var avg_p = single_doc.get("avg_p").get.asDouble().getValue();
-                println(s"$manu, Model: $id, Avg Price:" +" $" + f"$avg_p%.2f ($count)");
+                println(s"$manu $id, Avg Price:" +" $" + f"$avg_p%.2f ($count)");
                 //println(manu);
                 }
             }
@@ -143,6 +151,7 @@ case object Menu {
                 }
             }
         }
+        println("The number of results: " + out.length);
     }
 
     def printLogo: Unit = { // Prints a welcome message
@@ -152,8 +161,8 @@ case object Menu {
         println("----   00000000000000000000000000000000000000000")
         println("----  0000000000 WELCOME TO USED CARS! 0000000000")
         println("----    000000000000000000000000000000000000000");
-        println("-         00000000                  00000000");
-        println("            0000                      0000");
+        println("-         00000000                 00000000");
+        println("            0000                     0000");
 
     }
   
