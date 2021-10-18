@@ -13,14 +13,14 @@ import helper.Helpers._;
 import java.io._;
 import scala.io.StdIn.readLine;
 
-object zip extends App {
+object zip {
     val client: MongoClient = MongoClient();
     val database: MongoDatabase = client.getDatabase("geography");
         // Get a Collection.
     val collection: MongoCollection[Document] = database.getCollection("zipcodes");
 
     // How to read from json file to mongodb
-    val stringDoc = Source.fromFile("src/zipcodes.json").getLines.toList;
+    val stringDoc = Source.fromFile("misc/cars.json").getLines.toList;
     val bsonDoc = stringDoc.map(doc => Document(doc));
-    collection.insertMany(bsonDoc).printResults();
+    println(bsonDoc);
 }

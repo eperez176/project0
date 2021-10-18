@@ -13,7 +13,7 @@ import helper.Helpers._;
 import java.io._;
 import scala.io.StdIn.readLine;
 
-case object jsontomongo extends App {
+case object jsontomongo{
     var count = 0;
     val user_file = new File("misc/cars.csv");
     val user_source = Source.fromFile(user_file);

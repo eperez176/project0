@@ -29,6 +29,19 @@ case object Menu {
         out;
     }
 
+    def finish: Boolean = {
+        println("Are you finish? Yes (Y) or No (N)");
+        var input = scala.io.StdIn.readChar();
+        if(input == 'Y')
+            return true;
+        else if(input == 'N')
+            return false;
+        else {
+            println("Incorrect input. Assuming yes, exiting...");
+            return true;
+        }
+    }
+
     def searchOptions: Unit = {
         var manuf_name = "";
         var model_name = "";
@@ -110,7 +123,7 @@ case object Menu {
                 out = collection.aggregate((Seq(group("$manufacturer_name", sum("num",1),avg("avg_p", "$price_usd")), sort(ascending("avg_p"))))).results;
             else if(option_2 == 2 && opt_3 == "0") 
                 out = collection.aggregate( Seq(group("$model_name", push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;
-            else if(option_2 == 1)
+            else if(option_2 == 1) // Filtering at the beginning to decrease the query size
                 out = collection.aggregate((Seq(filter(equal("manufacturer_name",opt_3)),group("$manufacturer_name", sum("num",1),avg("avg_p", "$price_usd")), sort(ascending("avg_p"))))).results;
             else if(option_2 == 2)
                 out = collection.aggregate( Seq(filter(equal("model_name", opt_3)),group("$model_name", push("manu_n", "$manufacturer_name"), sum("num",1), avg("avg_p", "$price_usd")), sort(ascending("avg_p")))).results;

@@ -9,7 +9,7 @@ import org.mongodb.scala.model.Sorts._;
 import org.mongodb.scala.model.Aggregates._
 import org.mongodb.scala.model.Accumulators._
 
-object Hello extends App {
+object Hello {
         var manuf_name = "";
         var model_name = "";
         var color = "";

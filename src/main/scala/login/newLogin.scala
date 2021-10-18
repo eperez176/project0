@@ -12,7 +12,7 @@ import helper.Helpers._;
 import org.mongodb.scala.bson;
 
 object NewLogin {
-        def login: Boolean = {
+        def login: Int = {
             // Starting the mongoclient
             val client: MongoClient = MongoClient();
             val database: MongoDatabase = client.getDatabase("Ecommerce");
@@ -25,7 +25,7 @@ object NewLogin {
 
             // Checks if the user is new or current user or deleting account
             while(login_flag) {
-                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account): \n");
+                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account), 4 (exit): \n");
                 loginOption = scala.io.StdIn.readInt();
                 if(loginOption == 1 || loginOption == 2 || loginOption == 3) {
                     println(s"You picked: $loginOption");
@@ -125,9 +125,11 @@ object NewLogin {
             if(inServer) { // Return true if sign in or sign up was successful
                 println(s"\nHello $username!");
                 println("Loading user's information...\n");
-                return true;
+                return 1;
             }
+            else if(loginOption == 4)
+                return 0;
             else // False in other cases like deleting account
-                return false;
+                return -1;
         }
     }

@@ -7,7 +7,7 @@ import java.io._;
 import scala.io.StdIn.readLine;
 import game.Game;
 // Tests certain functions seperately 
-object prints extends App {
+object prints {
     def howdy: Unit = println("Howdy Yall");
     def no_howdy: Unit = println("No");
     Game.tic_tac_toe();
