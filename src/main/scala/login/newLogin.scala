@@ -11,6 +11,8 @@ import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import org.mongodb.scala.bson;
 
+
+
 object NewLogin {
         def login: Int = {
             // Starting the mongoclient
@@ -25,13 +27,13 @@ object NewLogin {
 
             // Checks if the user is new or current user or deleting account
             while(login_flag) {
-                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account), 4 (exit): \n");
+                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account), 4 (update) 5 (exit): \n");
                 loginOption = scala.io.StdIn.readInt();
-                if(loginOption == 1 || loginOption == 2 || loginOption == 3) {
+                if(loginOption == 1 || loginOption == 2 || loginOption == 3 || loginOption == 4) {
                     println(s"You picked: $loginOption");
                     login_flag = false;
                 }
-                else if(loginOption == 4){
+                else if(loginOption == 5){
                     println("Exiting...")
                     login_flag = false;
                 }
@@ -49,7 +51,7 @@ object NewLogin {
 
             // Checks if the user is in the database
             do {
-                if(loginOption == 1) { // Looks for user in the User Database
+                if(loginOption == 1 || loginOption == 4) { // Looks for user in the User Database
                     println("Enter username: ");
                     username = scala.io.StdIn.readLine();
                     println("Enter password: ");
@@ -65,6 +67,9 @@ object NewLogin {
                     if(!inServer) { // If the combination does not exist
                         println("\nUsername and password combination not found")
                         println("Please try again\n")
+                    }
+                    if(loginOption == 4) { // After logging in
+                        println("What would you like to change? Password (1), email (2)");
                     }
                 }
                 else if(loginOption == 2) { // Enters the new user into the database
@@ -87,7 +92,7 @@ object NewLogin {
                             "email" -> new_email,
                             "admin" -> false
                         )
-                        collection.insertOne(doc).results();
+                        collection.insertOne(doc).printResults();
                         println("\nSuccessful!")
                     }
                     else {
@@ -120,8 +125,11 @@ object NewLogin {
                             println("Please try again\n")
                         }
                 }
+                else if(loginOption == 5)
+                    deleteAccount = true;
             } while(!inServer && !deleteAccount); // Escape the loop if either login or delete accured
 
+            client.close(); // Close the client
             if(inServer) { // Return true if sign in or sign up was successful
                 println(s"\nHello $username!");
                 println("Loading user's information...\n");

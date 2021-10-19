@@ -178,5 +178,16 @@ case object Menu {
         println("            0000                     0000");
 
     }
+
+    def goodbye: Unit = {
+      println("       0000000000000000");
+      println("      0000   0000   0000");
+      println("     00      0000     000");
+      println("   0000000000000000000000000");
+      println("   0(   )000000000000(    )0");
+      println("    000000 GOOD BYE 00000000");
+      println("    -----------------------");
+      println("     00000          00000");
+    }
   
 }
