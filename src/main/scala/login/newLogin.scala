@@ -11,6 +11,8 @@ import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import org.mongodb.scala.bson;
 
+import login.Menu;
+
 
 
 object NewLogin {
@@ -70,6 +72,13 @@ object NewLogin {
                     }
                     if(loginOption == 4) { // After logging in
                         println("What would you like to change? Password (1), email (2)");
+                        var changeOption = Menu.initialOptions;
+                        if(changeOption == 1) {
+                            println("What's the new password:");
+                        }
+                        else if(changeOption == 2) {
+                            println("What would be the new email:")
+                        }
                     }
                 }
                 else if(loginOption == 2) { // Enters the new user into the database
