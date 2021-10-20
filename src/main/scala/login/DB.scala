@@ -32,7 +32,7 @@ object DB { // DB functions
             val user_source = Source.fromFile(user_file);
             val client: MongoClient = MongoClient();
             val database: MongoDatabase = client.getDatabase("Ecommerce");
-            val collection: MongoCollection[Document] = database.getCollection("smallCars");
+            val collection: MongoCollection[Document] = database.getCollection("usedCars");
 
             // Going to each line in the csv to parse through the data and sending it to the db
             for(line <- user_source.getLines()) {

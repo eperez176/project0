@@ -10,6 +10,7 @@ import org.mongodb.scala._;
 import org.mongodb.scala.model.Filters._
 import helper.Helpers._;
 import org.mongodb.scala.bson;
+import org.mongodb.scala.model.Updates._
 
 import login.Menu;
 
@@ -25,24 +26,6 @@ object NewLogin {
 
             var login_flag = true;
             var loginOption = 0;
-            println("Starting up...");
-
-            // Checks if the user is new or current user or deleting account
-            while(login_flag) {
-                println("\nType either 1 (sign in), 2 (sign up), 3 (delete account), 4 (update) 5 (exit): \n");
-                loginOption = scala.io.StdIn.readInt();
-                if(loginOption == 1 || loginOption == 2 || loginOption == 3 || loginOption == 4) {
-                    println(s"You picked: $loginOption");
-                    login_flag = false;
-                }
-                else if(loginOption == 5){
-                    println("Exiting...")
-                    login_flag = false;
-                }
-                else
-                    println("You did not pick a valid option, to exit enter 4.")
-            }
-
             var username = "";
             var password = "";
             var new_email = "";
@@ -50,9 +33,22 @@ object NewLogin {
             var pass_tmp = "";
             var inServer = false; // Assumes the user is not in the database
             var deleteAccount = false;
+            println("Starting up...");
 
-            // Checks if the user is in the database
             do {
+                login_flag = true;
+                // Checks if the user is new or current user or deleting account
+                while(login_flag) {
+                    println("\nType either 1 (sign in), 2 (sign up), 3 (delete account), 4 (update)\n");
+                    loginOption = scala.io.StdIn.readInt();
+                    if(loginOption == 1 || loginOption == 2 || loginOption == 3 || loginOption == 4) {
+                        println(s"You picked: $loginOption");
+                        login_flag = false;
+                    }
+                    else
+                        println("You did not pick a valid option")
+                }
+                // Checks if the user is in the database
                 if(loginOption == 1 || loginOption == 4) { // Looks for user in the User Database
                     println("Enter username: ");
                     username = scala.io.StdIn.readLine();
@@ -70,15 +66,23 @@ object NewLogin {
                         println("\nUsername and password combination not found")
                         println("Please try again\n")
                     }
-                    if(loginOption == 4) { // After logging in
+                    if(loginOption == 4 && inServer == true) { // After logging in
                         println("What would you like to change? Password (1), email (2)");
                         var changeOption = Menu.initialOptions;
                         if(changeOption == 1) {
                             println("What's the new password:");
+                            var new_pass = scala.io.StdIn.readLine();
+                            collection.updateOne(equal("_id",username), set("pass",new_pass)).printResults();
+
                         }
                         else if(changeOption == 2) {
                             println("What would be the new email:")
+                            var new_email = scala.io.StdIn.readLine();
+                            collection.updateOne(equal("_id",username), set("email",new_email)).printResults();
+
                         }
+                        inServer = false;
+                        println("Please login again");
                     }
                 }
                 else if(loginOption == 2) { // Enters the new user into the database
